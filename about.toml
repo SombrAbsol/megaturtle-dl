@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: 2026 SombrAbsol
+#
+# SPDX-License-Identifier: MIT
+
+# Settings of cargo-about, which generates THIRD_PARTY_NOTICES.md from about.hbs.
+# Install the version used by the CI, then generate the file:
+# cargo install --locked --features cli --version 0.9.3 cargo-about
+# cargo about generate --locked --fail -o THIRD_PARTY_NOTICES.md about.hbs
+
+# licenses accepted, the first ones being preferred for dual-licensed crates
+accepted = [
+    "MIT",
+    "Apache-2.0",
+    "ISC",
+    "BSD-3-Clause",
+    "Unicode-3.0",
+    "CDLA-Permissive-2.0",
+]
+
+# the targets of the CI builds
+targets = [
+    "x86_64-unknown-linux-musl",
+    "aarch64-apple-darwin",
+    "x86_64-pc-windows-msvc",
+]
+
+# crates that are not linked in the program
+ignore-build-dependencies = true
+ignore-dev-dependencies = true
+
+# crates that are not published, the program itself
+private = { ignore = true }

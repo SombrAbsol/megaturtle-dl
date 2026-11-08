@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2026 SombrAbsol
+#
+# SPDX-License-Identifier: MIT
+
+[package]
+name = "megaturtle-dl"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.89"
+description = "Asset bundle downloader for Pokémon HOME"
+license = "MIT"
+repository = "https://github.com/SombrAbsol/megaturtle-dl"
+publish = false
+
+[dependencies]
+anyhow = "1.0.104"
+flate2 = "1.1.10"
+lz4_flex = "0.14.0"
+md-5 = "0.11.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+ureq = { version = "3.5.1", default-features = false, features = ["rustls"] }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true

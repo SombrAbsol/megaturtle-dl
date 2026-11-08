@@ -1,0 +1,178 @@
+# SPDX-FileCopyrightText: 2026 SombrAbsol
+#
+# SPDX-License-Identifier: MIT
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/ci.yml"
+      - "src/**"
+      - "build.rs"
+      - "Cargo.lock"
+      - "Cargo.toml"
+      - "LICENSE"
+      - "README.md"
+      - "THIRD_PARTY_NOTICES.md"
+      - "about.hbs"
+      - "about.toml"
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/ci.yml"
+      - "src/**"
+      - "build.rs"
+      - "Cargo.lock"
+      - "Cargo.toml"
+      - "LICENSE"
+      - "README.md"
+      - "THIRD_PARTY_NOTICES.md"
+      - "about.hbs"
+      - "about.toml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  TARGET: megaturtle-dl
+
+jobs:
+  build:
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, macos-26, windows-2025]
+        include:
+          - os: ubuntu-26.04
+            artifact-suffix: linux
+            extension: ""
+            rust-target: x86_64-unknown-linux-musl
+
+          - os: macos-26
+            artifact-suffix: macos
+            extension: ""
+            rust-target: aarch64-apple-darwin
+
+          - os: windows-2025
+            artifact-suffix: windows
+            extension: .exe
+            rust-target: x86_64-pc-windows-msvc
+
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install musl (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y musl-tools
+
+      - name: Install Rust target
+        run: rustup target add ${{ matrix.rust-target }}
+
+      - name: Test ${{ env.TARGET }}
+        shell: bash
+        run: cargo test --locked --target ${{ matrix.rust-target }}
+
+      - name: Build ${{ env.TARGET }}
+        shell: bash
+        run: |
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            export RUSTFLAGS="-C target-feature=+crt-static"
+          fi
+          cargo build --release --locked --target ${{ matrix.rust-target }}
+          mkdir -p build
+          cp target/${{ matrix.rust-target }}/release/${{ env.TARGET }}${{ matrix.extension }} build/
+
+      - name: Smoke test ${{ env.TARGET }}
+        shell: bash
+        run: |
+          build/${{ env.TARGET }}${{ matrix.extension }} --version
+          build/${{ env.TARGET }}${{ matrix.extension }} --list
+
+      - name: Upload ${{ env.TARGET }} artefact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.TARGET }}-${{ matrix.artifact-suffix }}
+          path: |
+            build/${{ env.TARGET }}${{ matrix.extension }}
+            LICENSE
+            README.md
+            THIRD_PARTY_NOTICES.md
+
+          if-no-files-found: error
+          retention-days: 1
+
+  notices:
+    name: Check third-party notices
+    timeout-minutes: 30
+    runs-on: ubuntu-26.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install cargo-about
+        run: cargo install --locked --features cli --version 0.9.3 cargo-about
+
+      - name: Check THIRD_PARTY_NOTICES.md
+        run: |
+          cargo about generate --locked --fail -o THIRD_PARTY_NOTICES.md about.hbs 2>&1 | tee about.log
+          if grep -q "failed to validate" about.log; then
+            exit 1
+          fi
+          git diff --exit-code THIRD_PARTY_NOTICES.md
+
+  release-latest:
+    name: Update latest release
+    needs: [build, notices]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-26.04
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artefacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts/
+
+      - name: Package ZIPs
+        run: |
+          for suffix in linux macos windows; do
+            dir="artifacts/${{ env.TARGET }}-${suffix}"
+            ext=""
+            [ "$suffix" = "windows" ] && ext=".exe"
+
+            mkdir -p "pkg/${suffix}"
+            mv "${dir}/build/${{ env.TARGET }}${ext}" "pkg/${suffix}/"
+            mv "${dir}/LICENSE"                       "pkg/${suffix}/"
+            mv "${dir}/README.md"                     "pkg/${suffix}/"
+            mv "${dir}/THIRD_PARTY_NOTICES.md"        "pkg/${suffix}/"
+
+            (cd "pkg/${suffix}" && zip "../../${{ env.TARGET }}-${suffix}.zip" "${{ env.TARGET }}${ext}" LICENSE README.md THIRD_PARTY_NOTICES.md)
+          done
+
+      - name: Update latest release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: latest
+          name: Latest build
+          prerelease: true
+          body: |
+            Automated build from commit ${{ github.sha }}.
+          files: |
+            ${{ env.TARGET }}-linux.zip
+            ${{ env.TARGET }}-macos.zip
+            ${{ env.TARGET }}-windows.zip
