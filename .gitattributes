@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2026 SombrAbsol
+#
+# SPDX-License-Identifier: MIT
+
+# Text files, with LF line endings everywhere
+* text=auto eol=lf
+
+# Documents
+*.md   text diff=markdown
+
+# Serialization
+*.toml text
+
+# Templating
+*.hbs  text
+
+# Sources
+*.rs   text diff=rust

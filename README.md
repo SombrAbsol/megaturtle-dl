@@ -46,17 +46,20 @@ When run again, megaturtle-dl skips what it already finished, which also resumes
 
 A download that fails for a temporary reason, such as a network or server error, is tried again up to twice. Bundles that still cannot be downloaded, or that cannot be read, do not stop the others, and are counted at the end. A bundle that cannot be downloaded is not written, so an earlier copy is kept. A bundle that cannot be read is still saved, but it may be a manifest listing other bundles, which are then missed. In both cases, megaturtle-dl exits with status 1, and it stops after 20 failed downloads in a row, as the network or the server is then probably down. Run `megaturtle-dl -v` or `megaturtle-dl --verbose` to list them.
 
-Run `megaturtle-dl --help` to list all the options.
+Run `megaturtle-dl -h` or `megaturtle-dl --help` to list all the options.
 
 ### Exporting the assets
-megaturtle-dl does not export the content of the `.unity3d` files. To do so, you need a Unity asset extraction tool like [AssetStudioModGUI](https://github.com/aelurum/AssetStudioMod/releases/latest) (Windows only) or [AssetRipper](https://github.com/assetripper/assetripper) (Linux, macOS, Windows).
+megaturtle-dl does not export the content of the `.unity3d` files. To do so, you need a Unity asset extraction tool like [AssetStudioModGUI](https://github.com/aelurum/AssetStudioMod) (Windows only) or [AssetRipper](https://github.com/assetripper/assetripper) (Linux, macOS, Windows).
 
 Launch the tool, then open the `bundles/android/` or `bundles/ios/` directory, or one of their subdirectories to load fewer bundles at once. You can now browse and export the game's assets.
 
 ## Building
 ### Dependencies
 * a Rust toolchain, version 1.89 or later (for instance installed with [rustup](https://rustup.rs))
-* a C compiler, such as `clang` or `gcc`, used by some dependencies
+* a C compiler, used by the `ring` dependency:
+  * `gcc` or `clang` on Linux
+  * the Xcode Command Line Tools on macOS (run `xcode-select --install`)
+  * Visual Studio on Windows, which the Rust installer offers to install
 
 ### Steps
 1. If you don't already have them, install the dependencies
