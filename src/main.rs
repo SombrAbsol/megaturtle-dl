@@ -25,6 +25,7 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+use ui::PROGRAM_NAME;
 use utils::Platform;
 
 /// Concurrent downloads.
@@ -182,8 +183,8 @@ fn parse_mdvr(s: &str) -> Result<i32, String> {
 }
 
 /// Prints the usage, options and their defaults.
-fn print_help(argv0: &str) {
-    println!("Usage: {argv0} [OPTION]...");
+fn print_help() {
+    println!("Usage: {PROGRAM_NAME} [OPTION]...");
     print!(
         "Download and decrypt the asset bundles of Pokémon HOME.
 
@@ -234,7 +235,7 @@ fn print_version() {
         ""
     };
     println!(
-        "megaturtle-dl {}-{}-UTC-{os}-{profile}{linking}",
+        "{PROGRAM_NAME} {}-{}-UTC-{os}-{profile}{linking}",
         env!("BUILD_DATE"),
         env!("BUILD_TIME")
     );
@@ -252,10 +253,9 @@ There is NO WARRANTY, to the extent permitted by law.
 /// Command-line interface.
 fn main() -> ExitCode {
     let argv: Vec<String> = std::env::args().collect();
-    let argv0 = argv.first().map_or("megaturtle-dl", String::as_str);
     let settings = match parse_args(argv.get(1..).unwrap_or_default()) {
         Ok(Command::Help) => {
-            print_help(argv0);
+            print_help();
             return ExitCode::SUCCESS;
         }
         Ok(Command::Version) => {
@@ -265,8 +265,8 @@ fn main() -> ExitCode {
         Ok(Command::List) => return list_mdvrs(),
         Ok(Command::Download(s)) => s,
         Err(e) => {
-            eprintln!("megaturtle-dl: {e}");
-            eprintln!("Try '{argv0} --help' for more information.");
+            eprintln!("{PROGRAM_NAME}: {e}");
+            eprintln!("Try '{PROGRAM_NAME} --help' for more information.");
             return ExitCode::FAILURE;
         }
     };
@@ -378,7 +378,7 @@ fn list_mdvrs() -> ExitCode {
             ExitCode::SUCCESS
         }
         Err(e) => {
-            eprintln!("megaturtle-dl: {e:#}");
+            eprintln!("{PROGRAM_NAME}: {e:#}");
             ExitCode::FAILURE
         }
     }

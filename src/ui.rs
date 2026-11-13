@@ -9,6 +9,9 @@ use std::io::Write;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicBool, AtomicU8, AtomicUsize, Ordering::Relaxed};
 
+/// Name of the program, printed before messages.
+pub const PROGRAM_NAME: &str = env!("CARGO_PKG_NAME");
+
 static VERBOSITY: AtomicU8 = AtomicU8::new(1); // 0 quiet, 1 normal, 2 verbose
 static LABEL: Mutex<&str> = Mutex::new(""); // source being downloaded
 static DONE: AtomicUsize = AtomicUsize::new(0);
@@ -58,7 +61,7 @@ pub fn file_written() {
 pub fn fail(msg: &str) {
     FAILS.fetch_add(1, Relaxed);
     if VERBOSITY.load(Relaxed) > 1 {
-        eprintln!("megaturtle-dl: {}: {msg}", label());
+        eprintln!("{PROGRAM_NAME}: {}: {msg}", label());
     }
 }
 
@@ -88,7 +91,7 @@ pub fn finish(source: &str, result: anyhow::Result<()>) -> bool {
         println!(); // ends the progress line
     }
     if let Err(e) = result {
-        eprintln!("megaturtle-dl: {source}: {e:#}");
+        eprintln!("{PROGRAM_NAME}: {source}: {e:#}");
         return false;
     }
     say(&format!(
@@ -101,7 +104,7 @@ pub fn finish(source: &str, result: anyhow::Result<()>) -> bool {
     if fails > 0 {
         let _ = std::io::stdout().flush(); // before the message, on another stream
         eprintln!(
-            "megaturtle-dl: {source}: {fails} bundle{} could not be downloaded or read{}",
+            "{PROGRAM_NAME}: {source}: {fails} bundle{} could not be downloaded or read{}",
             if fails == 1 { "" } else { "s" },
             if VERBOSITY.load(Relaxed) > 1 {
                 ""
