@@ -69,8 +69,8 @@ This software is statically linked with the following Rust crates, distributed u
 | [block-buffer](https://github.com/RustCrypto/utils) | 0.12.1 | MIT OR Apache-2.0 |
 | [bytes](https://github.com/tokio-rs/bytes) | 1.12.1 | MIT |
 | [cfg-if](https://github.com/rust-lang/cfg-if) | 1.0.5 | MIT OR Apache-2.0 |
-| [const-oid](https://github.com/RustCrypto/formats) | 0.10.2 | Apache-2.0 OR MIT |
-| [crc32fast](https://github.com/srijs/rust-crc32fast) | 1.5.4 | MIT OR Apache-2.0 |
+| [const-oid](https://github.com/RustCrypto/formats) | 0.10.3 | Apache-2.0 OR MIT |
+| [crc32fast](https://github.com/srijs/rust-crc32fast) | 1.5.5 | MIT OR Apache-2.0 |
 | [crypto-common](https://github.com/RustCrypto/traits) | 0.2.2 | MIT OR Apache-2.0 |
 | [digest](https://github.com/RustCrypto/traits) | 0.11.3 | MIT OR Apache-2.0 |
 | [flate2](https://github.com/rust-lang/flate2-rs) | 1.1.11 | MIT OR Apache-2.0 |
@@ -78,7 +78,7 @@ This software is statically linked with the following Rust crates, distributed u
 | [http](https://github.com/hyperium/http) | 1.5.0 | MIT OR Apache-2.0 |
 | [httparse](https://github.com/seanmonstar/httparse) | 1.10.1 | MIT OR Apache-2.0 |
 | [hybrid-array](https://github.com/RustCrypto/hybrid-array) | 0.4.15 | MIT OR Apache-2.0 |
-| [itoa](https://github.com/dtolnay/itoa) | 1.0.18 | MIT OR Apache-2.0 |
+| [itoa](https://github.com/dtolnay/itoa) | 1.0.19 | MIT OR Apache-2.0 |
 | [libc](https://github.com/rust-lang/libc) | 0.2.191 | MIT OR Apache-2.0 |
 | [log](https://github.com/rust-lang/log) | 0.4.35 | MIT OR Apache-2.0 |
 | [lz4_flex](https://github.com/pseitz/lz4_flex) | 0.14.0 | MIT |
@@ -91,23 +91,23 @@ This software is statically linked with the following Rust crates, distributed u
 | [quote](https://github.com/dtolnay/quote) | 1.0.47 | MIT OR Apache-2.0 |
 | [ring](https://github.com/briansmith/ring) | 0.17.14 | Apache-2.0 AND ISC |
 | [rustls](https://github.com/rustls/rustls) | 0.23.46 | Apache-2.0 OR ISC OR MIT |
-| [rustls-pki-types](https://github.com/rustls/pki-types) | 1.15.1 | MIT OR Apache-2.0 |
-| [rustls-webpki](https://github.com/rustls/webpki) | 0.103.16 | ISC |
+| [rustls-pki-types](https://github.com/rustls/pki-types) | 1.16.0 | MIT OR Apache-2.0 |
+| [rustls-webpki](https://github.com/rustls/webpki) | 0.103.17 | ISC |
 | [serde](https://github.com/serde-rs/serde) | 1.0.229 | MIT OR Apache-2.0 |
 | [serde_core](https://github.com/serde-rs/serde) | 1.0.229 | MIT OR Apache-2.0 |
 | [serde_derive](https://github.com/serde-rs/serde) | 1.0.229 | MIT OR Apache-2.0 |
 | [serde_json](https://github.com/serde-rs/json) | 1.0.154 | MIT OR Apache-2.0 |
 | [simd-adler32](https://github.com/mcountryman/simd-adler32) | 0.3.10 | MIT |
 | [subtle](https://github.com/dalek-cryptography/subtle) | 2.6.1 | BSD-3-Clause |
-| [syn](https://github.com/dtolnay/syn) | 3.0.9 | MIT OR Apache-2.0 |
+| [syn](https://github.com/dtolnay/syn) | 3.0.10 | MIT OR Apache-2.0 |
 | [twox-hash](https://github.com/shepmaster/twox-hash) | 2.1.5 | MIT |
 | [typenum](https://github.com/paholg/typenum) | 1.20.1 | MIT OR Apache-2.0 |
 | [unicode-ident](https://github.com/dtolnay/unicode-ident) | 1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 |
 | [untrusted](https://github.com/briansmith/untrusted) | 0.9.0 | ISC |
-| [ureq](https://github.com/algesten/ureq) | 3.5.1 | MIT OR Apache-2.0 |
+| [ureq](https://github.com/algesten/ureq) | 3.5.2 | MIT OR Apache-2.0 |
 | [ureq-proto](https://github.com/algesten/ureq-proto) | 0.7.1 | MIT OR Apache-2.0 |
 | [utf8-zero](https://github.com/algesten/utf8-zero) | 0.8.1 | MIT OR Apache-2.0 |
-| [webpki-roots](https://github.com/rustls/webpki-roots) | 1.0.11 | CDLA-Permissive-2.0 |
+| [webpki-roots](https://github.com/rustls/webpki-roots) | 1.0.12 | CDLA-Permissive-2.0 |
 | [zeroize](https://github.com/RustCrypto/utils) | 1.9.1 | Apache-2.0 OR MIT |
 | [zmij](https://github.com/dtolnay/zmij) | 1.0.23 | MIT |
 
@@ -629,7 +629,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ````
 
-#### webpki-roots 1.0.11
+#### webpki-roots 1.0.12
 ````
 # Community Data License Agreement - Permissive - Version 2.0
 
@@ -1351,7 +1351,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ````
 
-#### rustls-webpki 0.103.16
+#### rustls-webpki 0.103.17
 ````
 Except as otherwise noted, this project is licensed under the following
 (ISC-style) terms:
@@ -1765,7 +1765,7 @@ DEALINGS IN THE SOFTWARE.
 
 ````
 
-#### const-oid 0.10.2
+#### const-oid 0.10.3
 ````
 Copyright (c) 2020-2026 The RustCrypto Project Developers
 
@@ -1855,7 +1855,7 @@ DEALINGS IN THE SOFTWARE.
 
 ````
 
-#### rustls-pki-types 1.15.1
+#### rustls-pki-types 1.16.0
 ````
 Copyright (c) 2023 Dirkjan Ochtman <dirkjan@ochtman.nl>
 
@@ -1927,7 +1927,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ````
 
-#### crc32fast 1.5.4
+#### crc32fast 1.5.5
 ````
 MIT License
 
@@ -1953,7 +1953,7 @@ SOFTWARE.
 
 ````
 
-#### ureq 3.5.1
+#### ureq 3.5.2
 ````
 MIT License
 
@@ -2064,7 +2064,7 @@ SOFTWARE.
 
 ````
 
-#### adler2 2.0.1, anyhow 1.0.104, itoa 1.0.18, once_cell 1.21.4, proc-macro2 1.0.107, quote 1.0.47, serde 1.0.229, serde_core 1.0.229, serde_derive 1.0.229, serde_json 1.0.154, syn 3.0.9, unicode-ident 1.0.27, utf8-zero 0.8.1, zmij 1.0.23
+#### adler2 2.0.1, anyhow 1.0.104, itoa 1.0.19, once_cell 1.21.4, proc-macro2 1.0.107, quote 1.0.47, serde 1.0.229, serde_core 1.0.229, serde_derive 1.0.229, serde_json 1.0.154, syn 3.0.10, unicode-ident 1.0.27, utf8-zero 0.8.1, zmij 1.0.23
 ````
 Permission is hereby granted, free of charge, to any
 person obtaining a copy of this software and associated
