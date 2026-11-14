@@ -10,27 +10,27 @@ on:
     paths:
       - ".github/workflows/ci.yml"
       - "src/**"
+      - "about.hbs"
+      - "about.toml"
       - "build.rs"
       - "Cargo.lock"
       - "Cargo.toml"
       - "LICENSE"
       - "README.md"
       - "THIRD_PARTY_NOTICES.md"
-      - "about.hbs"
-      - "about.toml"
   pull_request:
     branches: [ "main" ]
     paths:
       - ".github/workflows/ci.yml"
       - "src/**"
+      - "about.hbs"
+      - "about.toml"
       - "build.rs"
       - "Cargo.lock"
       - "Cargo.toml"
       - "LICENSE"
       - "README.md"
       - "THIRD_PARTY_NOTICES.md"
-      - "about.hbs"
-      - "about.toml"
   workflow_dispatch:
 
 concurrency:
@@ -75,7 +75,9 @@ jobs:
 
       - name: Install musl (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y musl-tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
 
       - name: Install Rust target
         run: rustup target add ${{ matrix.rust-target }}
@@ -97,8 +99,9 @@ jobs:
       - name: Smoke test ${{ env.TARGET }}
         shell: bash
         run: |
-          build/${{ env.TARGET }}${{ matrix.extension }} --version
-          build/${{ env.TARGET }}${{ matrix.extension }} --list
+          bin="build/${{ env.TARGET }}${{ matrix.extension }}"
+          "$bin" --version
+          "$bin" --list
 
       - name: Upload ${{ env.TARGET }} artefact
         uses: actions/upload-artifact@v7
@@ -109,7 +112,6 @@ jobs:
             LICENSE
             README.md
             THIRD_PARTY_NOTICES.md
-
           if-no-files-found: error
           retention-days: 1
 
